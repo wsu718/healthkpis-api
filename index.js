@@ -1,6 +1,4 @@
-// require('dotenv').config();
-// console.log(require('dotenv').config())
-// console.log(require('dotenv').config({ debug: true }));
+require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
 const server = require('./server.js');
 
 const PORT = process.env.PORT || 4000;
