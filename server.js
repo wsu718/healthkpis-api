@@ -6,7 +6,7 @@ const SleepRouter = require('./sleep/sleep-router.js');
 const server = express();
 
 server.use(helmet());
-server.use(cors());
+// server.use(cors());
 server.use(express.json());
 
 server.use('/api/sleep', SleepRouter);
