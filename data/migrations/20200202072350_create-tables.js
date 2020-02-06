@@ -3,20 +3,15 @@ exports.up = function (knex) {
     return knex.schema
         .createTable('sleep', tbl => {
             tbl.increments();
-            tbl.string('date', 128)
+            tbl.string('summary_date', 128)
                 .notNullable();
-            tbl.integer('seconds')
+            tbl.integer('score_total')
                 .notNullable();
-            tbl.integer('durationHours')
+            tbl.string('bedtime_start')
                 .notNullable();
-            tbl.integer('durationMinutes')
+            tbl.integer('duration')
                 .notNullable();
-            tbl.integer('score')
-                .notNullable();
-            tbl.string('bedtime')
-                .notNullable();
-        })
-
+        });
 };
 
 exports.down = function (knex) {
