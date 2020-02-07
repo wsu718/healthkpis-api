@@ -19,8 +19,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const sleepData = req.body;
 
-    Sleep
-        .add(sleepData)
+    Sleep.addSleep(sleepData)
         .then(sleep => {
             res.status(201).json(sleep)
         })
