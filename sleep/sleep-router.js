@@ -16,5 +16,18 @@ router.get('/', (req, res) => {
         })
 });
 
+router.post('/', (req, res) => {
+    const sleepData = req.body;
+
+    Sleep
+        .add(sleepData)
+        .then(sleep => {
+            res.status(201).json(sleep)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Failed to add sleep score' })
+        })
+})
+
 module.exports = router;
 
