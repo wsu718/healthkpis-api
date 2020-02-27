@@ -2,10 +2,16 @@ const db = require('../data/db-config.js');
 
 module.exports = {
     getSleep,
-    addSleep
+    addSleep,
+    getAllSleep
 }
 
-function getSleep() {
+function getSleep(user_id) {
+    return db('sleep')
+        .where({ user_id })
+};
+
+function getAllSleep() {
     return db('sleep')
 };
 

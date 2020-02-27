@@ -66,11 +66,10 @@ server.use(helmet());
 
 server.use(express.json());
 
-server.use('/api/sleep', SleepRouter);
+server.use('/api/sleep', checkJwt, SleepRouter);
 
 server.get('/', (req, res) => {
     res.send('<h1>Hello From HealthKPIs API');
 });
-
 
 module.exports = server;
