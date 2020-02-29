@@ -9,9 +9,11 @@ const router = express.Router();
 
 // Needed to add customScopeKey so jwtAuthz would check permissions 
 const checkReadScopes = jwtAuthz(['read:sleep'], { customScopeKey: 'permissions' })
+const checkAddScopes = jwtAuthz(['add:sleep'], { customScopeKey: 'permissions' })
 
 router.get('/', checkReadScopes, (req, res) => {
     const user_id = req.user.sub
+    console.log(user_id)
     Sleep.getSleep(user_id)
         .then(sleep => {
             res.status(200).json(sleep)
@@ -21,6 +23,7 @@ router.get('/', checkReadScopes, (req, res) => {
         })
 });
 
+// need to remove this eventually, this is just for testing 
 router.get('/all', checkReadScopes, (req, res) => {
     Sleep.getAllSleep()
         .then(sleep => {
@@ -31,8 +34,19 @@ router.get('/all', checkReadScopes, (req, res) => {
         })
 });
 
-router.post('/', (req, res) => {
-    const sleepData = req.body;
+router.post('/', checkAddScopes, (req, res) => {
+    console.log(req.body)
+    console.log(JSON.stringify(req.user.sub))
+    // console.log('test')
+    // const sleepData = {
+    //     ...req.body,
+    //     ...req.user.sub
+    // }
+    // console.log(sleepData)
+
+    sleepData = req.body
+    sleepData.user_id = req.user.sub
+    console.log(sleepData)
 
     Sleep.addSleep(sleepData)
         .then(sleep => {
