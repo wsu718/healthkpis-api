@@ -35,19 +35,8 @@ router.get('/all', checkReadScopes, (req, res) => {
 });
 
 router.post('/', checkAddScopes, (req, res) => {
-    console.log(req.body)
-    console.log(JSON.stringify(req.user.sub))
-    // console.log('test')
-    // const sleepData = {
-    //     ...req.body,
-    //     ...req.user.sub
-    // }
-    // console.log(sleepData)
-
     sleepData = req.body
     sleepData.user_id = req.user.sub
-    console.log(sleepData)
-
     Sleep.addSleep(sleepData)
         .then(sleep => {
             res.status(201).json(sleep)
