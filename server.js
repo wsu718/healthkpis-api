@@ -10,12 +10,13 @@ const SleepRouter = require('./sleep/sleep-router.js');
 // Create a new Express app
 const server = express();
 
-server.use(cors(
-    {
-        origin: "http://localhost:3000" || "https://www.healthkpis.com", // restrict calls to those this address
-        methods: "GET" // only allow GET requests
-    }
-));
+server.use(cors());
+// server.use(cors(
+//     {
+//         origin: "http://localhost:3000" || "https://www.healthkpis.com", // restrict calls to those this address
+//         methods: "GET" // only allow GET requests
+//     }
+// ));
 
 server.use(morgan('combined'))
 
