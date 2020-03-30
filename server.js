@@ -6,7 +6,7 @@ const jwksRsa = require("jwks-rsa");
 const morgan = require('morgan')
 const jwtAuthz = require('express-jwt-authz');
 
-const HealthData = require('./data/health-model.js');
+const healthData = require('./data/health-model.js');
 
 // Create a new Express app
 const server = express();
@@ -79,7 +79,7 @@ const checkAddScopes = jwtAuthz(['add:sleep'], { customScopeKey: 'permissions' }
 server.get('/api', checkJwt, checkReadScopes, (req, res) => {
     const user_id = req.user.sub
     console.log(user_id)
-    HealthData.getHealth(user_id)
+    healthData.getHealth(user_id)
         .then(health => {
             res.status(200).json(health)
         })
@@ -90,7 +90,7 @@ server.get('/api', checkJwt, checkReadScopes, (req, res) => {
 
 // Remove this eventually, this is just for testing 
 server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
-    HealthData.getAllHealth()
+    healthData.getAllHealth()
         .then(health => {
             res.status(200).json(health)
         })
@@ -100,9 +100,9 @@ server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
 });
 
 server.post('/api', checkJwt, checkAddScopes, (req, res) => {
-    HealthData = req.body
-    HealthData.user_id = req.user.sub
-    HealthData.addHealth(HealthData)
+    let health = req.body
+    health.user_id = req.user.sub
+    healthData.addHealth(health)
         .then(health => {
             res.status(201).json(health)
         })
