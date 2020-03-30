@@ -4,8 +4,9 @@ const cors = require('cors');
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const morgan = require('morgan')
+const jwtAuthz = require('express-jwt-authz');
 
-const SleepRouter = require('./sleep/sleep-router.js');
+const HealthData = require('./data/health-model.js');
 
 // Create a new Express app
 const server = express();
@@ -67,10 +68,50 @@ server.use(helmet());
 
 server.use(express.json());
 
-server.use('/api/sleep', checkJwt, SleepRouter);
+// server.use('/api/sleep', checkJwt, SleepRouter);
 
 server.get('/', (req, res) => {
     res.send('<h1>Hello From HealthKPIs API');
 });
+
+// Needed to add customScopeKey so jwtAuthz would check permissions 
+const checkReadScopes = jwtAuthz(['read:sleep'], { customScopeKey: 'permissions' })
+const checkAddScopes = jwtAuthz(['add:sleep'], { customScopeKey: 'permissions' })
+
+server.get('/api', checkJwt, checkReadScopes, (req, res) => {
+    const user_id = req.user.sub
+    console.log(user_id)
+    HealthData.getHealth(user_id)
+        .then(health => {
+            res.status(200).json(health)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Failed to get sleep scores' });
+        })
+});
+
+// need to remove this eventually, this is just for testing 
+server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
+    HealthData.getAllHealth()
+        .then(health => {
+            res.status(200).json(health)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Failed to get sleep scores' });
+        })
+});
+
+server.post('/api/', checkJwt, checkAddScopes, (req, res) => {
+    HealthData = req.body
+    HealthData.user_id = req.user.sub
+    HealthData.addHealth(HealthData)
+        .then(health => {
+            res.status(201).json(health)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Failed to add sleep score' })
+        })
+})
+
 
 module.exports = server;

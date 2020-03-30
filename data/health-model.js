@@ -1,21 +1,21 @@
-const db = require('../data/db-config.js');
+const db = require('./db-config.js');
 
 module.exports = {
-    getSleep,
-    addSleep,
-    getAllSleep
+    getHealth,
+    addHealth,
+    getAllHealth
 }
 
-function getSleep(user_id) {
+function getHealth(user_id) {
     return db('sleep')
         .where({ user_id })
 };
 
-function getAllSleep() {
+function getAllHealth() {
     return db('sleep')
 };
 
-function addSleep(sleep) {
+function addHealth(sleep) {
     return db('sleep')
         .insert(sleep)
         .then(id => {
