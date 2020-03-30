@@ -12,6 +12,8 @@ const HealthData = require('./data/health-model.js');
 const server = express();
 
 server.use(cors());
+
+// Research this and add later
 // server.use(cors(
 //     {
 //         origin: "http://localhost:3000" || "https://www.healthkpis.com", // restrict calls to those this address
@@ -42,8 +44,6 @@ const checkJwt = jwt({
     algorithm: ["RS256"]
 });
 
-// server.use(jwtCheck);
-
 server.get('/api/public', function (req, res) {
     res.json({
         message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
@@ -68,8 +68,6 @@ server.use(helmet());
 
 server.use(express.json());
 
-// server.use('/api/sleep', checkJwt, SleepRouter);
-
 server.get('/', (req, res) => {
     res.send('<h1>Hello From HealthKPIs API');
 });
@@ -90,7 +88,7 @@ server.get('/api', checkJwt, checkReadScopes, (req, res) => {
         })
 });
 
-// need to remove this eventually, this is just for testing 
+// Remove this eventually, this is just for testing 
 server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
     HealthData.getAllHealth()
         .then(health => {
@@ -101,7 +99,7 @@ server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
         })
 });
 
-server.post('/api/', checkJwt, checkAddScopes, (req, res) => {
+server.post('/api', checkJwt, checkAddScopes, (req, res) => {
     HealthData = req.body
     HealthData.user_id = req.user.sub
     HealthData.addHealth(HealthData)
@@ -112,6 +110,5 @@ server.post('/api/', checkJwt, checkAddScopes, (req, res) => {
             res.status(500).json({ message: 'Failed to add sleep score' })
         })
 })
-
 
 module.exports = server;

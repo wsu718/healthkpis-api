@@ -7,17 +7,17 @@ module.exports = {
 }
 
 function getHealth(user_id) {
-    return db('sleep')
+    return db('health')
         .where({ user_id })
 };
 
 function getAllHealth() {
-    return db('sleep')
+    return db('health')
 };
 
-function addHealth(sleep) {
-    return db('sleep')
-        .insert(sleep)
+function addHealth(health) {
+    return db('health')
+        .insert(health)
         .then(id => {
             return id
         })
