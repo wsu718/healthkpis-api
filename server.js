@@ -102,13 +102,18 @@ server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
 server.post('/api', checkJwt, checkAddScopes, (req, res) => {
     let health = req.body
     health.user_id = req.user.sub
-    healthData.addHealth(health)
-        .then(health => {
-            res.status(201).json(health)
-        })
-        .catch(error => {
-            res.status(500).json({ message: 'Failed to add sleep score' })
-        })
+    if (health.summary_date && health.user_id) {
+        healthData.addHealth(health)
+            .then(health => {
+                res.status(201).json(health)
+            })
+            .catch(error => {
+                res.status(500).json({ message: 'Failed to add sleep score.' })
+            })
+    }
+    else {
+        res.status(400).json({ message: 'Please provide a date or user id.' })
+    }
 })
 
 module.exports = server;
