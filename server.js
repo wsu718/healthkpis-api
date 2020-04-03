@@ -102,7 +102,7 @@ server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
 server.post('/api', checkJwt, checkAddScopes, (req, res) => {
     let health = req.body
     health.user_id = req.user.sub
-    if (health.summary_date && health.user_id) {
+    if (health.summary_date && health.user_id && health.score_total && health.bedtime_start && health.duration && health.readiness && health.hrv && health.rhr) {
         healthData.addHealth(health)
             .then(health => {
                 res.status(201).json(health)
@@ -112,7 +112,7 @@ server.post('/api', checkJwt, checkAddScopes, (req, res) => {
             })
     }
     else {
-        res.status(400).json({ message: 'Please provide a date or user id.' })
+        res.status(400).json({ message: 'Please provide a date, user id, sleep score, bedtime, sleep duration, readiness, HRV, and RHR.' })
     }
 })
 
