@@ -3,7 +3,8 @@ const db = require('./db-config.js');
 module.exports = {
     getHealth,
     addHealth,
-    getAllHealth
+    getAllHealth,
+    getHealthByDay
 }
 
 function getHealth(user_id) {
@@ -23,3 +24,9 @@ function addHealth(health) {
         })
 }
 
+function getHealthByDay(user_id, date) {
+    return db('health')
+        .where({ user_id })
+        .where({ summary_date: date })
+
+}

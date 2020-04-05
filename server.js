@@ -88,6 +88,18 @@ server.get('/api', checkJwt, checkReadScopes, (req, res) => {
         })
 });
 
+server.get('/api/:date', checkJwt, checkReadScopes, (req, res) => {
+    const user_id = req.user.sub;
+    const { date } = req.params;
+    healthData.getHealthByDay(user_id, date)
+        .then(healthDay => {
+            res.status(200).json(healthDay)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Failed to find health data.' })
+        })
+});
+
 // Remove this eventually, this is just for testing 
 server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
     healthData.getAllHealth()
@@ -95,7 +107,7 @@ server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
             res.status(200).json(health)
         })
         .catch(error => {
-            res.status(500).json({ message: 'Failed to get sleep scores' });
+            res.status(500).json({ message: 'Failed to get sleep scores.' });
         })
 });
 
