@@ -101,6 +101,18 @@ server.get('/api/:date', checkJwt, checkReadScopes, (req, res) => {
         })
 });
 
+server.delete('/api/:id', checkJwt, checkAddScopes, (req, res) => {
+    const user_id = req.user.sub;
+    const { id } = req.params
+    healthData.deleteHealth(user_id, id)
+        .then(id => {
+            res.status(200).json({ message: 'The health record has been deleted.' })
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Failed to find health data to delete.' })
+        })
+});
+
 // Remove this eventually, this is just for testing 
 server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
     healthData.getAllHealth()
