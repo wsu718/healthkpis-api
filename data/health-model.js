@@ -4,7 +4,8 @@ module.exports = {
     getHealth,
     addHealth,
     getAllHealth,
-    getHealthByDay
+    getHealthByDay,
+    findById
 }
 
 function getHealth(user_id) {
@@ -19,8 +20,9 @@ function getAllHealth() {
 function addHealth(health) {
     return db('health')
         .insert(health)
-        .then(id => {
-            return id
+        .then(ids => {
+            const [id] = ids
+            return findById(id)
         })
 }
 
@@ -28,5 +30,10 @@ function getHealthByDay(user_id, date) {
     return db('health')
         .where({ user_id })
         .where({ summary_date: date })
+}
 
+function findById(id) {
+    return db('health')
+        .where({ id })
+        .first()
 }
