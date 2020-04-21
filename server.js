@@ -132,11 +132,37 @@ server.post('/api', checkJwt, checkAddScopes, (req, res) => {
     delete health.durationHours;
     delete health.durationMinutes;
 
+
+
     health.user_id = req.user.sub
     if (health.summary_date && health.user_id && health.score_total && health.bedtime_start && health.readiness && health.hrv && health.rhr) {
         healthData.addHealth(health)
             .then(health => {
                 res.status(201).json(health)
+            })
+            .catch(error => {
+                res.status(500).json({ message: 'Failed to add sleep score.' })
+            })
+    }
+    else {
+        res.status(400).json({ message: 'Please provide a date, user id, sleep score, bedtime, sleep duration, readiness, HRV, and RHR.' })
+    }
+})
+
+server.put('/api/:id', checkJwt, checkAddScopes, (req, res) => {
+    let health = req.body
+
+    // This is a workaround because React Hook Forms doesn't have a good way to combine/add, and doing forms outside RHF feels messy.
+    health.duration = (health.durationHours * 3600) + (health.durationMinutes * 60)
+    delete health.durationHours;
+    delete health.durationMinutes;
+    const { id } = req.params
+    const user_id = req.user.sub;
+    // if (health.summary_date && health.user_id && health.score_total && health.bedtime_start && health.readiness && health.hrv && health.rhr) 
+    if (true) {
+        healthData.updateHealth(user_id, id, health)
+            .then(updatedHealth => {
+                res.status(201).json(updatedHealth)
             })
             .catch(error => {
                 res.status(500).json({ message: 'Failed to add sleep score.' })

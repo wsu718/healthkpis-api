@@ -6,7 +6,8 @@ module.exports = {
     getAllHealth,
     getHealthByDay,
     findById,
-    deleteHealth
+    deleteHealth,
+    updateHealth
 }
 
 function getHealth(user_id) {
@@ -44,4 +45,12 @@ function deleteHealth(user_id, id) {
         .where({ user_id })
         .where({ id })
         .del();
+}
+
+function updateHealth(user_id, id, health) {
+    return db('health')
+        .where({ user_id })
+        .where({ id })
+        .update(health)
+        .then(count => count > 0 ? findById(id) : null)
 }
