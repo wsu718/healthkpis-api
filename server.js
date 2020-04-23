@@ -5,7 +5,6 @@ const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const morgan = require('morgan')
 const jwtAuthz = require('express-jwt-authz');
-
 const healthData = require('./data/health-model.js');
 
 // Create a new Express app
@@ -81,12 +80,27 @@ server.get('/api', checkJwt, checkReadScopes, (req, res) => {
     const user_id = req.user.sub
     healthData.getHealth(user_id)
         .then(health => {
+
             res.status(200).json(health)
         })
         .catch(error => {
             res.status(500).json({ message: 'Failed to get sleep scores' });
         })
 });
+
+//test
+server.get('/api/weeks', checkJwt, checkReadScopes, (req, res) => {
+    const user_id = req.user.sub;
+    healthData.getWeeks(user_id)
+        .then(weeks => {
+            weeks.summary_date = '2019'
+            res.status(200).json(weeks)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Failed to get sleep scores' });
+        })
+});
+
 
 server.get('/api/:date', checkJwt, checkReadScopes, (req, res) => {
     const user_id = req.user.sub;
