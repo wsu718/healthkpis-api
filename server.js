@@ -80,7 +80,6 @@ server.get('/api', checkJwt, checkReadScopes, (req, res) => {
     const user_id = req.user.sub
     healthData.getHealth(user_id)
         .then(health => {
-
             res.status(200).json(health)
         })
         .catch(error => {
@@ -93,7 +92,6 @@ server.get('/api/weeks', checkJwt, checkReadScopes, (req, res) => {
     const user_id = req.user.sub;
     healthData.getWeeks(user_id)
         .then(weeks => {
-            weeks.summary_date = '2019'
             res.status(200).json(weeks)
         })
         .catch(error => {

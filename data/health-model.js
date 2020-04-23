@@ -66,3 +66,9 @@ function getWeeks(user_id) {
         .select('week_of_year').as('week_of_year')
         .select('summary_date')
 }
+
+// function getLeader(date){
+//     return db('health')
+//     .where({ date })
+
+// }
