@@ -65,6 +65,7 @@ function getWeeks(user_id) {
         })
         .select('week_of_year').as('week_of_year')
         .select('summary_date')
+        //do I need .as on there?
 }
 
 // function getLeader(date){

@@ -139,9 +139,9 @@ server.post('/api', checkJwt, checkAddScopes, (req, res) => {
     let health = req.body
 
     // This is a workaround because React Hook Forms doesn't have a good way to combine/add, and doing forms outside RHF feels messy.
-    health.duration = (health.durationHours * 3600) + (health.durationMinutes * 60)
-    delete health.durationHours;
-    delete health.durationMinutes;
+    // health.duration = (health.durationHours * 3600) + (health.durationMinutes * 60)
+    // delete health.durationHours;
+    // delete health.durationMinutes;
 
     health.user_id = req.user.sub
     if (health.summary_date && health.user_id && health.score_total && health.bedtime_start && health.readiness && health.hrv && health.rhr) {
