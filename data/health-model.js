@@ -18,7 +18,6 @@ function getHealth(user_id) {
 
 function getAllHealth() {
     return db('health')
-        .first()
 };
 
 function addHealth(health) {
@@ -60,12 +59,12 @@ function updateHealth(user_id, id, health) {
 function getWeeks(user_id) {
     return db('health')
         .where({ user_id })
-        .groupBy('week_of_year').as('week')
-        .avg({
-            'avg_score_total': 'score_total', 'avg_readiness': 'readiness', 'avg_duration': 'duration', 'avg_readiness': 'readiness', 'avg_hrv': 'hrv', 'avg_rhr': 'rhr', 'avg_weight': 'weight'
-        })
-        .select('week_of_year').as('week_of_year')
-        .select('summary_date')
+    // .groupBy('week_of_year').as('week')
+    // .avg({
+    //     'avg_score_total': 'score_total', 'avg_readiness': 'readiness', 'avg_duration': 'duration', 'avg_readiness': 'readiness', 'avg_hrv': 'hrv', 'avg_rhr': 'rhr', 'avg_weight': 'weight'
+    // })
+    // .select('week_of_year').as('week_of_year')
+    // .select('summary_date')
     //do I need .as on there?
 }
 
