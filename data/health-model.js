@@ -60,13 +60,11 @@ function getWeeks(user_id) {
     return db('health')
         .where({ user_id })
         .select('week_of_year')
-        .select('summary_date')
-        .groupBy('week_of_year').as('week')
+        .groupBy('week_of_year')
         .avg({
             'avg_score_total': 'score_total', 'avg_readiness': 'readiness', 'avg_duration': 'duration', 'avg_readiness': 'readiness', 'avg_hrv': 'hrv', 'avg_rhr': 'rhr', 'avg_weight': 'weight'
         })
-
-    // .select('week_of_year').as('week_of_year')
+    // Need to add year as well
 
 }
 
