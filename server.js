@@ -75,6 +75,18 @@ server.get('/', (req, res) => {
 const checkReadScopes = jwtAuthz(['read:sleep'], { customScopeKey: 'permissions' })
 const checkAddScopes = jwtAuthz(['add:sleep'], { customScopeKey: 'permissions' })
 
+
+// Remove this eventually, this is just for testing 
+server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
+    healthData.getAllHealth()
+        .then(health => {
+            res.status(200).json(health)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Failed to get sleep scores.' });
+        })
+});
+
 server.get('/api', checkJwt, checkReadScopes, (req, res) => {
     // data.duration = durationHours + durationMinutes;
     const user_id = req.user.sub
@@ -124,16 +136,6 @@ server.delete('/api/:id', checkJwt, checkAddScopes, (req, res) => {
         })
 });
 
-// Remove this eventually, this is just for testing 
-server.get('/api/all', checkJwt, checkReadScopes, (req, res) => {
-    healthData.getAllHealth()
-        .then(health => {
-            res.status(200).json(health)
-        })
-        .catch(error => {
-            res.status(500).json({ message: 'Failed to get sleep scores.' });
-        })
-});
 
 server.post('/api', checkJwt, checkAddScopes, (req, res) => {
     let health = req.body
