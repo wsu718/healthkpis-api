@@ -21,10 +21,10 @@ function getAllHealth() {
 };
 
 function addHealth(health) {
+    console.log(health)
     return db('health')
-        .insert(health)
-        .then(ids => {
-            const [id] = ids
+        .insert(health, 'id')
+        .then(([id]) => {
             return findById(id)
         })
 }

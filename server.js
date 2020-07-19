@@ -146,27 +146,20 @@ server.post('/api', checkJwt, checkAddScopes, (req, res) => {
     // delete health.durationMinutes;
 
     health.user_id = req.user.sub
-    console.log(health)
-    // if (health.summary_date && health.user_id && health.score_total && health.bedtime_start && health.readiness && health.hrv && health.rhr) {
-    //     healthData.addHealth(health)
-    //         .then(health => {
-    //             res.status(201).json(health)
-    //         })
-    //         .catch(error => {
-    //             res.status(500).json({ message: 'Failed to add sleep score.' })
-    //         })
-    // }
-    // else {
-    //     res.status(400).json({ message: 'Please provide a date, user id, sleep score, bedtime, sleep duration, readiness, HRV, and RHR.' })
-    // }
 
-    healthData.addHealth(health)
-        .then(health => {
-            res.status(201).json(health)
-        })
-        .catch(error => {
-            res.status(500).json({ message: 'Failed to add sleep score.' })
-        })
+    if (health.summary_date && health.user_id && health.score_total && health.bedtime_start && health.readiness && health.hrv && health.rhr) {
+        healthData.addHealth(health)
+            .then(health => {
+                res.status(201).json(health)
+            })
+            .catch(error => {
+                res.status(500).json({ message: 'Failed to add sleep score.' })
+            })
+    }
+    else {
+        res.status(400).json({ message: 'Please provide a date, user id, sleep score, bedtime, sleep duration, readiness, HRV, and RHR.' })
+    }
+
 
 })
 
